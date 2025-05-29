@@ -93,11 +93,13 @@ export const medicosTable = pgTable("medicos", {
     .$onUpdate(() => new Date()),
 });
 
-export const RelacaoMedicos = relations(medicosTable, ({ one }) => ({
+export const RelacaoMedicos = relations(medicosTable, ({ many, one }) => ({
   clinica: one(clinicasTable, {
     fields: [medicosTable.clinicaId],
     references: [clinicasTable.id],
   }),
+  // Relação de medico com agendamentos
+  agendamentos: many(agendamentosTable),
 }));
 
 export const sexoPacienteEnum = pgEnum("sexo_paciente", [
@@ -122,11 +124,13 @@ export const pacientesTable = pgTable("pacientes", {
     .$onUpdate(() => new Date()),
 });
 
-export const RelacaoPacientes = relations(pacientesTable, ({ one }) => ({
+export const RelacaoPacientes = relations(pacientesTable, ({ one, many }) => ({
   clinica: one(clinicasTable, {
     fields: [pacientesTable.clinicaId],
     references: [clinicasTable.id],
   }),
+  // Relação de paciente com agendamentos
+  agendamentos: many(agendamentosTable),
 }));
 
 export const agendamentosTable = pgTable("agendamentos", {
