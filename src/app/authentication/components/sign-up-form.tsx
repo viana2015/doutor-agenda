@@ -51,7 +51,7 @@ const SignUpForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    //await new Promise((resolve) => setTimeout(resolve, 1000));
     await authClient.signUp.email(
       {
         email: values.email,
