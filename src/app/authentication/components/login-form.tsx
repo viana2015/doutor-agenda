@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -70,6 +71,26 @@ const LoginForm = () => {
       },
     );
   }
+
+  async function handleGoogleSignIn() {
+    await authClient.signIn.social(
+      { provider: "google", callbackURL: "/dashboard" },
+      {
+        onError: () => {
+          toast.error("Erro ao fazer login com Google", {
+            description: "Por favor, tente novamente",
+            duration: 5000,
+            position: "top-right",
+            style: {
+              background: "#f87171",
+              color: "#fff",
+            },
+            icon: "🔑",
+          });
+        },
+      },
+    );
+  }
   return (
     <Card>
       <CardHeader>
@@ -112,13 +133,24 @@ const LoginForm = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button className="w-full" type="submit">
-              {form.formState.isSubmitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                "Entrar"
-              )}
-            </Button>
+            <div className="w-full space-y-2">
+              <Button className="w-full" type="submit">
+                {form.formState.isSubmitting ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  "Entrar"
+                )}
+              </Button>
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={handleGoogleSignIn}
+                type="button"
+              >
+                <FcGoogle className="mr-2 h-4 w-4" />
+                Entrar com Google
+              </Button>
+            </div>
           </CardFooter>
         </form>
       </Form>
